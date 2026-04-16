@@ -1,5 +1,8 @@
 import pandas as pd
 import torch
+import sys
+import os
+import matplotlib.pyplot as plt
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from torchvision.ops import MLP
@@ -7,9 +10,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import f1_score, balanced_accuracy_score, roc_auc_score, precision_recall_curve, auc
 # from torchmetrics.classification import BinaryAUROC, BinaryAveragePrecision
-
-
-
+sys.path.insert(0, os.path.expanduser("/home/nbalke/ML4H_P2/~/my_packages/"))
+import shap
 
 
 # /home/nbalke/jupyter/bin
@@ -109,3 +111,35 @@ print(metrics)
 with open("mlp_metrics.txt", "w") as f:
     f.write(metrics)
 
+
+# ── SHAP wrapper ─────────────────────────────────────────────────────────────
+def model_predict(X_numpy):
+    tensor = torch.tensor(X_numpy.astype("float32")).to(DEVICE)
+    with torch.no_grad():
+        logits = model(tensor).cpu().numpy()
+    return torch.sigmoid(torch.tensor(logits)).numpy().flatten()
+ 
+feature_names = df.drop(columns=[TARGET]).columns.tolist()
+ 
+# Use a small background sample for the explainer
+background = torch.tensor(X_train[:100].astype("float32"))
+explainer = shap.Explainer(model_predict, background.numpy(), feature_names=feature_names)
+shap_values = explainer(X_test, max_evals=2 * X_test.shape[1] + 1)
+ 
+# ── Plots ─────────────────────────────────────────────────────────────────────
+ 
+# 1. Beeswarm — global feature importance with value distribution
+shap.plots.beeswarm(shap_values, max_display=15, show=False)
+plt.gcf().set_size_inches(10, 6)
+plt.tight_layout()
+plt.savefig("shap_beeswarm.png", dpi=150, bbox_inches="tight")
+plt.close()
+ 
+# 2. Bar — mean absolute SHAP values per feature
+shap.plots.bar(shap_values, max_display=15, show=False)
+plt.gcf().set_size_inches(10, 6)
+plt.tight_layout()
+plt.savefig("shap_bar.png", dpi=150, bbox_inches="tight")
+plt.close()
+ 
+print("Saved: shap_beeswarm.png, shap_bar.png")
