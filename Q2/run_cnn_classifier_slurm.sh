@@ -27,11 +27,9 @@ source "$VENV_DIR/bin/activate"
 python -m pip install --upgrade pip
 python -m pip install torch torchvision pandas pillow
 
-if ![ -d "$DATA_DIR" ]; then
+if [ ! -d "$DATA_DIR" ]; then
     echo "Data not generated yet."
     python "${SCRIPT_DIR}/preprocessing.py"
 fi
-
-
 
 python "${SCRIPT_DIR}/cnn_classifier.py"
