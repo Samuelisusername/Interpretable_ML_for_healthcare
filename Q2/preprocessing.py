@@ -2,6 +2,7 @@ from torchvision import datasets, transforms
 import pandas as pd
 from torch.utils.data import DataLoader
 import torch
+import os
 
 
 DATA_PATH = "../../ml4h_data/p2/data/chest_xray/"
