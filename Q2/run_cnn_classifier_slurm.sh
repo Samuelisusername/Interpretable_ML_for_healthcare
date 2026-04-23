@@ -16,7 +16,8 @@ VENV_DIR="${SCRIPT_DIR}/.venv"
 
 cd "$SCRIPT_DIR"
 
-if [[ ! -d "$VENV_DIR" ]]; then
+if [[ ! -f "$VENV_DIR/bin/activate" ]]; then
+    rm -rf "$VENV_DIR"
     python3 -m venv "$VENV_DIR"
 fi
 
