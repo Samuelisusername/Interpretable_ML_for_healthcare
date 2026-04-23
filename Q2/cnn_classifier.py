@@ -61,6 +61,9 @@ class CNNTrainer:
                 correct += (predicted == labels).sum().item()
         print(f'Accuracy: {100 * correct / total:.2f}%', flush=True)
 
+    def save_weights(self):
+        torch.save(self.model.state_dict(), "")
+
 
 class transformed_data(torch.Dataset):
 
@@ -92,3 +95,4 @@ if __name__ == "__main__":
     # Assuming train_loader, val_loader, and test_loader are defined
     trainer.train(train_loader, val_loader, num_epochs=10)
     trainer.evaluate(test_loader)
+    trainer.save_weights()
