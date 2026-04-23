@@ -5,10 +5,10 @@ class CNNClassifier(nn.Module):
 
     def __init__(self, num_classes):
         super(CNNClassifier, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1)
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.dropout = nn.Dropout(p=0.5)
-        self.fc = nn.Linear(16 * 8 * 8, num_classes)  # Assuming input size is 32x32
+        self.dropout = nn.Dropout(p=0.2)
+        self.fc = nn.Linear(16, num_classes)
 
     def forward(self, x):
         x = self.pool(torch.relu(self.conv1(x)))
@@ -66,6 +66,6 @@ if __name__ == "__main__":
 
     trainer = CNNTrainer(model, optimizer, criterion)
 
-    # Assuming train_loader and val_loader are defined
+    # Assuming train_loader, val_loader, and test_loader are defined
     # trainer.train(train_loader, val_loader, num_epochs=10)
     # trainer.evaluate(test_loader)
