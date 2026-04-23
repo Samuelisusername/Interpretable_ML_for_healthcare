@@ -47,7 +47,7 @@ class CNNTrainer:
                     val_loss += self.criterion(outputs, labels).item()
                 val_loss /= len(val_loader)
 
-            print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {loss.item():.4f}, Val Loss: {val_loss:.4f}')
+            print(f'Epoch [{epoch+1}/{num_epochs}], Train Loss: {loss.item():.4f}, Val Loss: {val_loss:.4f}', flush=True)
     
     def evaluate(self, test_loader):
         self.model.eval()
@@ -59,7 +59,7 @@ class CNNTrainer:
                 _, predicted = torch.max(outputs.data, 1) 
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-        print(f'Accuracy: {100 * correct / total:.2f}%')
+        print(f'Accuracy: {100 * correct / total:.2f}%', flush=True)
 
 
 class transformed_data(torch.Dataset):
