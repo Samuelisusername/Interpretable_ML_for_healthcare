@@ -75,7 +75,7 @@ class transformed_data(torch.Dataset):
         return self.len
 
 if __name__ == "__main__":
-    DATA_PATH = "/data"
+    DATA_PATH = "data"
     
     train_loader = DataLoader(transformed_data(os.path.join(DATA_PATH, "train")), batch_size=64, shuffle=True)
     val_loader   = DataLoader(transformed_data(os.path.join(DATA_PATH, "val")), batch_size=64, shuffle=False)

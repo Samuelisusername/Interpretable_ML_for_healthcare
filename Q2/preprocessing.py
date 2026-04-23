@@ -47,14 +47,14 @@ print(train_dataset.classes, flush=True)       # ['normal', 'pneumonia']
 print(train_dataset.class_to_idx, flush=True)  # {'normal': 0, 'pneumonia': 1}
 
 
-os.makedirs("/data/train_loader")
+os.makedirs("data/train_loader")
 for i, img in enumerate(train_dataset):
-  torch.save(img, '/data/train_loader/train_transformed_img{}'.format(i))
+  torch.save(img, 'data/train_loader/train_transformed_img{}'.format(i))
 
-os.makedirs("/data/val_loader")
+os.makedirs("data/val_loader")
 for i, img in enumerate(val_dataset):
-  torch.save(img, '/data/val_loader/val_transformed_img{}'.format(i))
+  torch.save(img, 'data/val_loader/val_transformed_img{}'.format(i))
 
-os.makedirs("/data/test_loader")
+os.makedirs("data/test_loader")
 for i, img in enumerate(test_dataset):
-  torch.save(img, '/data/test_loader/test_transformed_img{}'.format(i))
+  torch.save(img, 'data/test_loader/test_transformed_img{}'.format(i))
