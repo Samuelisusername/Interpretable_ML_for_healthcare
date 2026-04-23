@@ -4,7 +4,6 @@
 #SBATCH --partition=jobs
 #SBATCH --output=cnn_classifier-%j.out
 #SBATCH --error=cnn_classifier-%j.err
-#SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=02:00:00
 
