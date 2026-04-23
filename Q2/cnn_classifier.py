@@ -72,7 +72,7 @@ class transformed_data(torch.utils.data.Dataset):
         self.len = len(os.listdir(self.img))
 
     def __getitem__(self, idx):
-        return torch.load(s.path.join(self.img, os.listdir(self.img)[index]))
+        return torch.load(os.path.join(self.img, os.listdir(self.img)[idx]))
 
     def __len__(self):
         return self.len
