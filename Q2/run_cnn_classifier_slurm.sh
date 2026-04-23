@@ -8,7 +8,8 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORK_DIR="${SLURM_SUBMIT_DIR:-$(pwd)}"
+SCRIPT_DIR="$(cd "$WORK_DIR" && pwd)"
 VENV_DIR="${SCRIPT_DIR}/.venv"
 
 cd "$SCRIPT_DIR"
