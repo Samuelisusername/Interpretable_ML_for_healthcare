@@ -12,6 +12,7 @@ set -euo pipefail
 WORK_DIR="${SLURM_SUBMIT_DIR:-$(pwd)}"
 SCRIPT_DIR="$(cd "$WORK_DIR" && pwd)"
 VENV_DIR="${SCRIPT_DIR}/.venv"
+DATA_DIR="${SCRIPT_DIR}/data"
 
 cd "$SCRIPT_DIR"
 
@@ -25,5 +26,12 @@ source "$VENV_DIR/bin/activate"
 
 python -m pip install --upgrade pip
 python -m pip install torch torchvision pandas pillow
+
+if ![ -d "$DATA_DIR" ]; then
+    echo "Data not generated yet."
+    python "${SCRIPT_DIR}/preprocessing.py"
+fi
+
+
 
 python "${SCRIPT_DIR}/cnn_classifier.py"

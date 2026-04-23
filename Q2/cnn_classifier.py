@@ -3,6 +3,7 @@ import torch.nn as nn
 from torchvision import datasets, transforms
 import pandas as pd
 from torch.utils.data import DataLoader
+import os
 
 class CNNClassifier(nn.Module):
 
@@ -11,7 +12,7 @@ class CNNClassifier(nn.Module):
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3, stride=1, padding=1)
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dropout = nn.Dropout(p=0.2)
-        self.fc = nn.Linear(8 * input_size[0] * input_size[1], num_classes)
+        self.fc = nn.Linear(2 * input_size[0] * input_size[1], num_classes)
 
     def forward(self, x):
         x = self.pool(torch.relu(self.conv1(x)))
@@ -60,47 +61,25 @@ class CNNTrainer:
                 correct += (predicted == labels).sum().item()
         print(f'Accuracy: {100 * correct / total:.2f}%')
 
+
+class transformed_data(torch.Dataset):
+
+    def __init__(self, img):
+        self.img = img
+        self.len = len(os.listdir(self.img))
+
+    def __getitem__(self, idx):
+        return torch.load(s.path.join(self.img, sorted(os.listdir(self.img))[index]))
+
+    def __len__(self):
+        return self.len
+
 if __name__ == "__main__":
-    DATA_PATH = "../ml4h_data/p2/data/chest_xray/"
-
-    # Step 1 — compute mean and std from training set (grayscale, so 1 channel)
-    tmp_dataset = datasets.ImageFolder(root=DATA_PATH + "train", transform=transforms.Compose([
-        transforms.Resize((384, 384)),
-        transforms.Grayscale(),
-        transforms.ToTensor(),  # scales to [0, 1]
-    ]))
-
-    print("hello", flush=True)
-    loader = DataLoader(tmp_dataset, batch_size=64, shuffle=False)
-
-    mean, std, n = 0.0, 0.0, 0
-    for images, _ in loader:
-        mean += images.mean()
-        std  += images.std()
-        n    += 1
-
-    mean /= n
-    std  /= n
-    print(f"Mean: {mean:.4f}, Std: {std:.4f}", flush=True)
-
-    # Step 2 — apply normalization
-    transform = transforms.Compose([
-        transforms.Resize((384, 384)),
-        transforms.Grayscale(),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[mean], std=[std]),  # 1 channel
-    ])
-
-
-
-    train_dataset = datasets.ImageFolder(root=DATA_PATH + "train", transform=transform)
-    val_dataset   = datasets.ImageFolder(root=DATA_PATH + "val",   transform=transform)
-    test_dataset  = datasets.ImageFolder(root=DATA_PATH + "test",  transform=transform)
-
-
-    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-    val_loader   = DataLoader(val_dataset, batch_size=64, shuffle=False)
-    test_loader  = DataLoader(test_dataset, batch_size=64, shuffle=False)
+    DATA_PATH = "/data"
+    
+    train_loader = DataLoader(transformed_data(os.path.join(DATA_PATH, "train")), batch_size=64, shuffle=True)
+    val_loader   = DataLoader(transformed_data(os.path.join(DATA_PATH, "val")), batch_size=64, shuffle=False)
+    test_loader  = DataLoader(transformed_data(os.path.join(DATA_PATH, "test")), batch_size=64, shuffle=False)
 
     # Example usage
     num_classes = 2
