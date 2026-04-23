@@ -1,5 +1,8 @@
 import torch
 import torch.nn as nn
+from torchvision import datasets, transforms
+import pandas as pd
+from torch.utils.data import DataLoader
 
 class CNNClassifier(nn.Module):
 
@@ -58,6 +61,47 @@ class CNNTrainer:
         print(f'Accuracy: {100 * correct / total:.2f}%')
 
 if __name__ == "__main__":
+    DATA_PATH = "../ml4h_data/p2/data/chest_xray/"
+
+    # Step 1 — compute mean and std from training set (grayscale, so 1 channel)
+    tmp_dataset = datasets.ImageFolder(root=DATA_PATH + "train", transform=transforms.Compose([
+        transforms.Resize((384, 384)),
+        transforms.Grayscale(),
+        transforms.ToTensor(),  # scales to [0, 1]
+    ]))
+
+    print("hello", flush=True)
+    loader = DataLoader(tmp_dataset, batch_size=64, shuffle=False)
+
+    mean, std, n = 0.0, 0.0, 0
+    for images, _ in loader:
+        mean += images.mean()
+        std  += images.std()
+        n    += 1
+
+    mean /= n
+    std  /= n
+    print(f"Mean: {mean:.4f}, Std: {std:.4f}", flush=True)
+
+    # Step 2 — apply normalization
+    transform = transforms.Compose([
+        transforms.Resize((384, 384)),
+        transforms.Grayscale(),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[mean], std=[std]),  # 1 channel
+    ])
+
+
+
+    train_dataset = datasets.ImageFolder(root=DATA_PATH + "train", transform=transform)
+    val_dataset   = datasets.ImageFolder(root=DATA_PATH + "val",   transform=transform)
+    test_dataset  = datasets.ImageFolder(root=DATA_PATH + "test",  transform=transform)
+
+
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    val_loader   = DataLoader(val_dataset, batch_size=64, shuffle=False)
+    test_loader  = DataLoader(test_dataset, batch_size=64, shuffle=False)
+
     # Example usage
     num_classes = 2
     model = CNNClassifier(num_classes=num_classes)
@@ -67,5 +111,5 @@ if __name__ == "__main__":
     trainer = CNNTrainer(model, optimizer, criterion)
 
     # Assuming train_loader, val_loader, and test_loader are defined
-    # trainer.train(train_loader, val_loader, num_epochs=10)
-    # trainer.evaluate(test_loader)
+    trainer.train(train_loader, val_loader, num_epochs=10)
+    trainer.evaluate(test_loader)
