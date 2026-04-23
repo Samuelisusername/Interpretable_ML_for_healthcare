@@ -65,14 +65,14 @@ class CNNTrainer:
         torch.save(self.model.state_dict(), "")
 
 
-class transformed_data(torch.Dataset):
+class transformed_data(torch.utils.data.Dataset):
 
     def __init__(self, img):
         self.img = img
         self.len = len(os.listdir(self.img))
 
     def __getitem__(self, idx):
-        return torch.load(s.path.join(self.img, sorted(os.listdir(self.img))[index]))
+        return torch.load(s.path.join(self.img, os.listdir(self.img)[index]))
 
     def __len__(self):
         return self.len
