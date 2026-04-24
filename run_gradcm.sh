@@ -15,4 +15,4 @@ source /cluster/courses/ml4h/jupyter/bin/activate
 
 # 3. Navigate to your project folder
 cd ~/ml4h_project
-python integrated_gradients.py
+python cnn_shuffled.py
