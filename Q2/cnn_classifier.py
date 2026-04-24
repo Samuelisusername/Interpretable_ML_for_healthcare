@@ -62,7 +62,7 @@ class CNNTrainer:
         print(f'Accuracy: {100 * correct / total:.2f}%', flush=True)
 
     def save_weights(self):
-        torch.save(self.model.state_dict(), "")
+        torch.save(self.model.state_dict(), "model_weights.pth")
 
 
 class transformed_data(torch.utils.data.Dataset):

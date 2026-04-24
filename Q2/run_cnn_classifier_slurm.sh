@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=cnn-classifier
-#SBATCH --account=ml4h-jobs
+#SBATCH --account=ml4h_jobs
 #SBATCH --partition=jobs
 #SBATCH --output=cnn_classifier-%j.out
 #SBATCH --error=cnn_classifier-%j.err
