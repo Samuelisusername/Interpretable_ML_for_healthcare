@@ -120,7 +120,7 @@ if __name__ == "__main__":
         axes[i, 0].set_title(f"Healthy {i+1} - Original")
         axes[i, 0].axis('off')
         
-        axes[i, 1].imshow(h_img_np, cmap='gray')
+        #axes[i, 1].imshow(h_img_np, cmap='gray') removed because we only want the Grad-CAM not overlayed by the original
         axes[i, 1].imshow(h_cam, cmap='jet', alpha=0.5) # Using 'jet' for classic Grad-CAM look
         axes[i, 1].set_title(f"Healthy {i+1} - Grad-CAM")
         axes[i, 1].axis('off')
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         axes[i, 2].set_title(f"Disease {i+1} - Original")
         axes[i, 2].axis('off')
         
-        axes[i, 3].imshow(d_img_np, cmap='gray')
+        #axes[i, 3].imshow(d_img_np, cmap='gray') removed for the same reason as above
         axes[i, 3].imshow(d_cam, cmap='jet', alpha=0.5)
         axes[i, 3].set_title(f"Disease {i+1} - Grad-CAM")
         axes[i, 3].axis('off')

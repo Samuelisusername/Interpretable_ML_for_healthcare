@@ -97,7 +97,7 @@ if __name__ == "__main__":
         axes[i, 0].axis('off')
         
         # Plot Healthy IG Map
-        axes[i, 1].imshow(h_img_np, cmap='gray')
+        #axes[i, 1].imshow(h_img_np, cmap='gray') removed such that we only have the integrated gradients visualized
         im1 = axes[i, 1].imshow(h_ig, cmap='hot', alpha=0.5)
         axes[i, 1].set_title(f"Healthy {i+1} - IG Map")
         axes[i, 1].axis('off')
@@ -114,7 +114,7 @@ if __name__ == "__main__":
         axes[i, 2].axis('off')
         
         # Plot Disease IG Map
-        axes[i, 3].imshow(d_img_np, cmap='gray')
+        #axes[i, 3].imshow(d_img_np, cmap='gray') removed for same reason as above.
         im2 = axes[i, 3].imshow(d_ig, cmap='hot', alpha=0.5)
         axes[i, 3].set_title(f"Disease {i+1} - IG Map")
         axes[i, 3].axis('off')
