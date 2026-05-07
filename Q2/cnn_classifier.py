@@ -1,4 +1,4 @@
-from sklearn.metrics import average_precision_score, roc_auc_score
+from sklearn.metrics import roc_auc_score, average_precision_score
 import torch
 import torch.nn as nn
 from torchvision import datasets, transforms
@@ -78,6 +78,29 @@ class CNNTrainer:
         print(f'AUROC: {auroc:.4f}')
         auprc = average_precision_score(labels.numpy(), outputs.numpy())
         print(f'AUPRC: {auprc:.4f}')
+
+        with open("evaluation_results.txt", "w") as f:
+            f.write(f'Accuracy: {100 * tp / total:.2f}%\n')
+            f.write(f'Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1_score:.4f}\n')
+            f.write(f'AUROC: {auroc:.4f}\n')
+            f.write(f'AUPRC: {auprc:.4f}\n')
+
+
+    def save_weights(self):
+        torch.save(self.model.state_dict(), "best_model_weights.pth")
+
+
+class transformed_data(torch.utils.data.Dataset):
+
+    def __init__(self, img):
+        self.img = img
+        self.len = len(os.listdir(self.img))
+
+    def __getitem__(self, idx):
+        return torch.load(os.path.join(self.img, os.listdir(self.img)[idx]))
+
+    def __len__(self):
+        return self.len
 
 if __name__ == "__main__":
     DATA_PATH = "data"
