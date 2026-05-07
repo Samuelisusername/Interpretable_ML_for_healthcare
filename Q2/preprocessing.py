@@ -2,9 +2,10 @@ from torchvision import datasets, transforms
 import pandas as pd
 from torch.utils.data import DataLoader
 import torch
+import os
 
 
-DATA_PATH = "../ml4h_data/p2/data/chest_xray/"
+DATA_PATH = "../../ml4h_data/p2/data/chest_xray/"
 
 
 # Step 1 — compute mean and std from training set (grayscale, so 1 channel)
@@ -44,3 +45,16 @@ test_dataset  = datasets.ImageFolder(root=DATA_PATH + "test",  transform=transfo
 
 print(train_dataset.classes, flush=True)       # ['normal', 'pneumonia']
 print(train_dataset.class_to_idx, flush=True)  # {'normal': 0, 'pneumonia': 1}
+
+
+os.makedirs("data/train")
+for i, img in enumerate(train_dataset):
+  torch.save(img, 'data/train/train_transformed_img{}'.format(i))
+
+os.makedirs("data/val")
+for i, img in enumerate(val_dataset):
+  torch.save(img, 'data/val/val_transformed_img{}'.format(i))
+
+os.makedirs("data/test")
+for i, img in enumerate(test_dataset):
+  torch.save(img, 'data/test/test_transformed_img{}'.format(i))
