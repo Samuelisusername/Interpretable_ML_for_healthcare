@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -186,14 +184,13 @@ def plot_feature_curves(model: NAM, scaler: StandardScaler, X_train_raw: np.ndar
 		axes[index].plot(x_values, y_values, color="#1f77b4", linewidth=2)
 		axes[index].axhline(0.0, color="black", linewidth=0.8, alpha=0.4)
 		axes[index].set_ylim(y_min - y_pad, y_max + y_pad)
-		axes[index].set_title(name, fontsize=13)
-		axes[index].set_xlabel(name, fontsize=11)
+		axes[index].set_title(name, fontsize=20)
 		if index % n_cols == 0:
-			axes[index].set_ylabel("logit contribution", fontsize=11)
+			axes[index].set_ylabel("contribution", fontsize=16)
 		else:
 			axes[index].set_ylabel("")
 			axes[index].tick_params(axis="y", labelleft=False)
-		axes[index].tick_params(axis="both", labelsize=10)
+		axes[index].tick_params(axis="both", labelsize=12)
 
 	for axis in axes[n_features:]:
 		axis.remove()

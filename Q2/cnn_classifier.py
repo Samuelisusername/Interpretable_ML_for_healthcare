@@ -1,3 +1,4 @@
+from sklearn.metrics import average_precision_score, roc_auc_score
 import torch
 import torch.nn as nn
 from torchvision import datasets, transforms
@@ -51,14 +52,31 @@ class CNNTrainer:
     def evaluate(self, test_loader):
         self.model.eval()
         with torch.no_grad():
-            correct = 0
             total = 0
+            tp = 0
+            tn = 0
+            fp = 0
+            fn = 0
+
             for images, labels in test_loader:
                 outputs = self.model(images)
                 _, predicted = torch.max(outputs.data, 1) 
                 total += labels.size(0)
-                correct += (predicted == labels).sum().item()
-        print(f'Accuracy: {100 * correct / total:.2f}%')
+                tp += ((predicted == 1) & (labels == 1)).sum().item()
+                tn += ((predicted == 0) & (labels == 0)).sum().item()
+                fp += ((predicted == 1) & (labels == 0)).sum().item()
+                fn += ((predicted == 0) & (labels == 1)).sum().item()
+
+        print(f'Accuracy: {100 * tp / total:.2f}%')
+        precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+        recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+        f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+        print(f'Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1_score:.4f}')
+
+        auroc = roc_auc_score(labels.numpy(), outputs.numpy())
+        print(f'AUROC: {auroc:.4f}')
+        auprc = average_precision_score(labels.numpy(), outputs.numpy())
+        print(f'AUPRC: {auprc:.4f}')
 
 if __name__ == "__main__":
     DATA_PATH = "../ml4h_data/p2/data/chest_xray/"
