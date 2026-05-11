@@ -68,6 +68,7 @@ plt.barh(importance_df['feature'], importance_df['value'], color='skyblue')
 plt.xlabel('Coefficient Value')
 plt.title('Feature Importances (Lasso Logistic Regression)')
 plt.gca().invert_yaxis() # Puts the most important feature at the top
-plt.show()
+plt.tight_layout()
+plt.savefig("lasso_feature_importance.png")
 
 

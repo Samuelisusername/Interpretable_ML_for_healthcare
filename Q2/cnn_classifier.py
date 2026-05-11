@@ -117,7 +117,6 @@ if __name__ == "__main__":
 
     trainer = CNNTrainer(model, optimizer, criterion)
 
-    # Assuming train_loader, val_loader, and test_loader are defined
     trainer.train(train_loader, val_loader, num_epochs=10)
     trainer.evaluate(test_loader)
     trainer.save_weights()

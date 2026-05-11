@@ -6,7 +6,6 @@ from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 import numpy as np
 
-# --- 1. ARCHITECTURE (Must match exactly) ---
 class CNNClassifier(nn.Module):
     def __init__(self, num_classes, input_size=[384, 384]):
         super(CNNClassifier, self).__init__()
@@ -22,7 +21,6 @@ class CNNClassifier(nn.Module):
         x = self.fc(x)
         return x
 
-# --- 2. GRAD-CAM LOGIC ---
 class GradCAM:
     def __init__(self, model, target_layer):
         self.model = model
@@ -48,7 +46,7 @@ class GradCAM:
         score = output[:, target_class]
         score.backward()
         
-        # Pool the gradients across the spatial dimensions (Global Average Pooling)
+        # Pool the gradients across the spatial dimensions 
         pooled_gradients = torch.mean(self.gradients, dim=[0, 2, 3])
         
         # Weight the activations by the gradients
