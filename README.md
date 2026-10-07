@@ -15,9 +15,7 @@ Q2: Predicting Pneumonia from Chest X-Rays using CNNs
 * **Reliability Check:** Tested model integrity by training on **randomly shuffled labels** to ensure genuine feature learning over dataset noise.
 * **Metrics:** Evaluated performance via Accuracy, Precision, Recall, F1 Score, AUROC, and AUPRC.
 
-Verification of reliability of models
-
-AI Usage declaration: 
+LLMs Usage declaration: 
 Tool used: Gemini 3.1 Pro
 Files affected: all
 Purpose: Initial Brainstorming, Code cleanup and comments generation for readability
